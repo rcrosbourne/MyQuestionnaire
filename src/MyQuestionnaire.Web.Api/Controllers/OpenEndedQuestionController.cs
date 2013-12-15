@@ -8,9 +8,11 @@ using log4net;
 using MyQuestionnaire.Web.Api.DBContext;
 using MyQuestionnaire.Web.Api.TypeMappers;
 using MyQuestionnaire.Web.Api.ViewModels;
+using MyQuestionnaire.Web.Common;
 
 namespace MyQuestionnaire.Web.Api.Controllers
 {
+    [LoggingSession]
     public class OpenEndedQuestionController : ApiController
     {
         private readonly IDbContext _db;

@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyQuestionnaire.Web.Api", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyQuestionnaire.Web.Api.Tests", "MyQuestionnaire.Web.Api.Tests\MyQuestionnaire.Web.Api.Tests.csproj", "{B3228CF2-8A95-4DEA-A4C9-16B103BEDF76}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyQuestionnaire.Web.Common", "MyQuestionnaire.Web.Common\MyQuestionnaire.Web.Common.csproj", "{E40852C9-AC70-4AAB-A6A7-9CE0FDFA87F7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{B3228CF2-8A95-4DEA-A4C9-16B103BEDF76}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B3228CF2-8A95-4DEA-A4C9-16B103BEDF76}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B3228CF2-8A95-4DEA-A4C9-16B103BEDF76}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E40852C9-AC70-4AAB-A6A7-9CE0FDFA87F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E40852C9-AC70-4AAB-A6A7-9CE0FDFA87F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E40852C9-AC70-4AAB-A6A7-9CE0FDFA87F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E40852C9-AC70-4AAB-A6A7-9CE0FDFA87F7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

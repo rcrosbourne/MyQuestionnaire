@@ -1,8 +1,7 @@
 ﻿using System.Data.Entity;
-using System.Data.Entity.Core;
-using System.Data.Entity.Core.Objects;
 using log4net;
 using MyQuestionnaire.Web.Api.Models;
+using MyQuestionnaire.Web.Common;
 
 namespace MyQuestionnaire.Web.Api.DBContext
 {
@@ -18,8 +17,8 @@ namespace MyQuestionnaire.Web.Api.DBContext
     
         public MyQuestionnaireDbContext() : base("name=MyQuestionnaireDBContext")
         {
-            //_dbLog = dbLog;
-            //Database.Log = _dbLog.Debug; //Log database queries
+            var _dbLog = WebContainerManager.Get<ILog>();
+            Database.Log = _dbLog.Debug; //Log database queries
         }
         
         public DbSet<OpenEndedQuestion> OpenEndedQuestions { get; set; }
