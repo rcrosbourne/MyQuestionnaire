@@ -1,4 +1,6 @@
 ﻿using System.Data.Entity;
+using System.Data.Entity.Core;
+using System.Data.Entity.Core.Objects;
 using log4net;
 using MyQuestionnaire.Web.Api.Models;
 
@@ -12,14 +14,14 @@ namespace MyQuestionnaire.Web.Api.DBContext
         // automatically whenever you change your model schema, please use data migrations.
         // For more information refer to the documentation:
         // http://msdn.microsoft.com/en-us/data/jj591621.aspx
-        private ILog _dbLog;
+        //private ILog _dbLog;
     
-        public MyQuestionnaireDbContext(ILog dbLog) : base("name=MyQuestionnaireDBContext")
+        public MyQuestionnaireDbContext() : base("name=MyQuestionnaireDBContext")
         {
-            _dbLog = dbLog;
-            Database.Log = _dbLog.Debug;
+            //_dbLog = dbLog;
+            //Database.Log = _dbLog.Debug; //Log database queries
         }
-
+        
         public DbSet<OpenEndedQuestion> OpenEndedQuestions { get; set; }
     
     }

@@ -1,5 +1,6 @@
 ﻿using System.Web.Http;
 using MyQuestionnaire.Web.Api.DBContext;
+using MyQuestionnaire.Web.Api.TypeMappers;
 using Ninject;
 using log4net;
 using Ninject.Syntax;
@@ -25,6 +26,7 @@ namespace MyQuestionnaire.Web.Api.App_Start
             //Add Other bindings here
             //container.Bind<ISomthing>().To<Somthing>();
             container.Bind<IDbContext>().To<MyQuestionnaireDbContext>();
+            container.Bind<IOpenEndedQuestionMap>().To<OpenEndedQuestionMap>();
         }
 
         private static void ConfigureLog4Net(IBindingRoot container)

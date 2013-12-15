@@ -1,10 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Web;
 
-namespace MyQuestionnaire.Web.Api.Models
+namespace MyQuestionnaire.Web.Api.ViewModels
 {
-    public abstract class ModelBase 
+    public class ViewModelBase
     {
         [Timestamp]
         [ReadOnly(true)]

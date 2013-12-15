@@ -1,17 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
+﻿using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
 using log4net;
-using Microsoft.Owin.Logging;
 using MyQuestionnaire.Web.Api.DBContext;
-using MyQuestionnaire.Web.Api.Models;
+using MyQuestionnaire.Web.Api.TypeMappers;
+using MyQuestionnaire.Web.Api.ViewModels;
 
 namespace MyQuestionnaire.Web.Api.Controllers
 {
@@ -19,25 +15,22 @@ namespace MyQuestionnaire.Web.Api.Controllers
     {
         private readonly IDbContext _db;
         private readonly ILog _log;
-       
+        private readonly IOpenEndedQuestionMap _openEndedQuestionMap;
 
-        public OpenEndedQuestionController(IDbContext dbContext, ILog log)
+        public OpenEndedQuestionController(IDbContext dbContext, ILog log, IOpenEndedQuestionMap openEndedQuestionMap)
         {
             _db = dbContext;
             _log = log;
-
+            _openEndedQuestionMap = openEndedQuestionMap;
         }
-
-
         // GET api/OpenEndedQuestion
-        public IQueryable<OpenEndedQuestion> GetOpenEndedQuestions()
+        public IQueryable<OpenEndedQuestionViewModel> GetOpenEndedQuestions()
         {
             
-            return _db.OpenEndedQuestions;
+            return _db.OpenEndedQuestions.AsEnumerable().Select(q => _openEndedQuestionMap.CreateViewModel(q)).AsQueryable();
         }
 
         // GET api/OpenEndedQuestion/5
-        [ResponseType(typeof(OpenEndedQuestion))]
         public IHttpActionResult GetOpenEndedQuestion(int id)
         {
             var openendedquestion = _db.OpenEndedQuestions.Find(id);
@@ -46,23 +39,22 @@ namespace MyQuestionnaire.Web.Api.Controllers
                 return NotFound();
             }
 
-            return Ok(openendedquestion);
+            return Ok(_openEndedQuestionMap.CreateViewModel(openendedquestion));
         }
 
         // PUT api/OpenEndedQuestion/5
-        public IHttpActionResult PutOpenEndedQuestion(int id, OpenEndedQuestion openendedquestion)
+        public IHttpActionResult PutOpenEndedQuestion(int id, OpenEndedQuestionViewModel openendedquestionViewModel)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != openendedquestion.Id)
+            if (id != openendedquestionViewModel.Id)
             {
                 return BadRequest();
             }
-
-            _db.Entry(openendedquestion).State = EntityState.Modified;
+            _db.Entry(_openEndedQuestionMap.CreateModel(openendedquestionViewModel)).State = EntityState.Modified;
 
             try
             {
@@ -84,22 +76,22 @@ namespace MyQuestionnaire.Web.Api.Controllers
         }
 
         // POST api/OpenEndedQuestion
-        [ResponseType(typeof(OpenEndedQuestion))]
-        public IHttpActionResult PostOpenEndedQuestion(OpenEndedQuestion openendedquestion)
+        [ResponseType(typeof(OpenEndedQuestionViewModel))]
+        public IHttpActionResult PostOpenEndedQuestion(OpenEndedQuestionViewModel openendedQuestionViewModeluestion)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-
-            _db.OpenEndedQuestions.Add(openendedquestion);
+            var openendedquestionModel = _openEndedQuestionMap.CreateModel(openendedQuestionViewModeluestion);
+            _db.OpenEndedQuestions.Add(openendedquestionModel);
             _db.SaveChanges();
 
-            return CreatedAtRoute("DefaultApi", new { id = openendedquestion.Id }, openendedquestion);
+            return CreatedAtRoute("DefaultApi", new { id = openendedquestionModel.Id }, _openEndedQuestionMap.CreateViewModel(openendedquestionModel));
         }
 
         // DELETE api/OpenEndedQuestion/5
-        [ResponseType(typeof(OpenEndedQuestion))]
+        [ResponseType(typeof(OpenEndedQuestionViewModel))]
         public IHttpActionResult DeleteOpenEndedQuestion(int id)
         {
             var openendedquestion = _db.OpenEndedQuestions.Find(id);
@@ -111,9 +103,8 @@ namespace MyQuestionnaire.Web.Api.Controllers
             _db.OpenEndedQuestions.Remove(openendedquestion);
             _db.SaveChanges();
 
-            return Ok(openendedquestion);
+            return Ok(_openEndedQuestionMap.CreateViewModel(openendedquestion));
         }
-
         protected override void Dispose(bool disposing)
         {
             if (disposing)

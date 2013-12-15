@@ -217,9 +217,12 @@
     <Compile Include="Providers\ApplicationOAuthProvider.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="TypeMappers\IOpenEndedQuestionMap.cs" />
+    <Compile Include="TypeMappers\OpenEndedQuestionMap.cs" />
     <Compile Include="ViewModels\CloseEndedQuestionViewModel.cs" />
     <Compile Include="ViewModels\Link.cs" />
     <Compile Include="ViewModels\OpenEndedQuestionViewModel.cs" />
+    <Compile Include="ViewModels\ViewModelBase.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\HelpPage\HelpPage.css" />
@@ -271,7 +274,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="TypeMappers\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

@@ -13,6 +13,7 @@ namespace MyQuestionnaire.Web.Api.ViewModels
         public string Description { get; set; }
         public List<string>Choices { get; set; }
         public List<string> Answers { get; set; }
+
         public List<Link> Links { get; set; } 
     }
 }
