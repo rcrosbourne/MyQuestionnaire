@@ -13,6 +13,7 @@ using MyQuestionnaire.Web.Common;
 namespace MyQuestionnaire.Web.Api.Controllers
 {
     [LoggingSession]
+    [Authorize]
     public class OpenEndedQuestionController : ApiController
     {
         private readonly IDbContext _db;

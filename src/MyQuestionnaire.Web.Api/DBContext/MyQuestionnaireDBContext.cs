@@ -17,8 +17,8 @@ namespace MyQuestionnaire.Web.Api.DBContext
     
         public MyQuestionnaireDbContext() : base("name=MyQuestionnaireDBContext")
         {
-            var _dbLog = WebContainerManager.Get<ILog>();
-            Database.Log = _dbLog.Debug; //Log database queries
+            var dbLog = WebContainerManager.Get<ILog>();
+            Database.Log = dbLog.Debug; //Log database queries
         }
         
         public DbSet<OpenEndedQuestion> OpenEndedQuestions { get; set; }
