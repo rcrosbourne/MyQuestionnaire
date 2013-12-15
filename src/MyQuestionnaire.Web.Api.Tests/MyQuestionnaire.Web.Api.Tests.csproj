@@ -6,7 +6,7 @@
     <ProductVersion>
     </ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{74A30AAB-BC04-4D93-A8F5-D857E6D97E8C}</ProjectGuid>
+    <ProjectGuid>{B3228CF2-8A95-4DEA-A4C9-16B103BEDF76}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>MyQuestionnaire.Web.Api.Tests</RootNamespace>
@@ -96,6 +96,15 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MyQuestionnaire.Web.Api\MyQuestionnaire.Web.Api.csproj">
+      <Project>{C6B781A0-CBDB-4675-9202-E9AB5C55F1D5}</Project>
+      <Name>MyQuestionnaire.Web.Api</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.

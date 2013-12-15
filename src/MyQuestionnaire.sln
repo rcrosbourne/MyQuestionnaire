@@ -3,7 +3,25 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.21005.1
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyQuestionnaire.Web.Api", "MyQuestionnaire.Web.Api\MyQuestionnaire.Web.Api.csproj", "{C6B781A0-CBDB-4675-9202-E9AB5C55F1D5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyQuestionnaire.Web.Api.Tests", "MyQuestionnaire.Web.Api.Tests\MyQuestionnaire.Web.Api.Tests.csproj", "{B3228CF2-8A95-4DEA-A4C9-16B103BEDF76}"
+EndProject
 Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C6B781A0-CBDB-4675-9202-E9AB5C55F1D5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C6B781A0-CBDB-4675-9202-E9AB5C55F1D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C6B781A0-CBDB-4675-9202-E9AB5C55F1D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C6B781A0-CBDB-4675-9202-E9AB5C55F1D5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B3228CF2-8A95-4DEA-A4C9-16B103BEDF76}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B3228CF2-8A95-4DEA-A4C9-16B103BEDF76}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B3228CF2-8A95-4DEA-A4C9-16B103BEDF76}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B3228CF2-8A95-4DEA-A4C9-16B103BEDF76}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
