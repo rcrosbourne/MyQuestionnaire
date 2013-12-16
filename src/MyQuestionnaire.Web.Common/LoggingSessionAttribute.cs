@@ -1,5 +1,6 @@
 ﻿using System.Web.Http.Controllers;
 using System.Web.Http.Filters;
+using Microsoft.AspNet.Identity;
 
 namespace MyQuestionnaire.Web.Common
 {
@@ -7,6 +8,7 @@ namespace MyQuestionnaire.Web.Common
     {
         private readonly IActionLogHelper _actionLogHelper;
         private readonly IActionExceptionHandler _actionExceptionHandler;
+        
 
         public LoggingSessionAttribute()
             : this(WebContainerManager.Get<IActionLogHelper>(),

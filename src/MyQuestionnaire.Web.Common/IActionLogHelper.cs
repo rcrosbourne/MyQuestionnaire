@@ -1,4 +1,5 @@
 ﻿using System.Web.Http.Controllers;
+using Microsoft.AspNet.Identity;
 
 namespace MyQuestionnaire.Web.Common
 {

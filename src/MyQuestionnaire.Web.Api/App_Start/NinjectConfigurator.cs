@@ -1,4 +1,6 @@
 ﻿using System.Web.Http;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 using MyQuestionnaire.Web.Api.DBContext;
 using MyQuestionnaire.Web.Api.TypeMappers;
 using MyQuestionnaire.Web.Common;

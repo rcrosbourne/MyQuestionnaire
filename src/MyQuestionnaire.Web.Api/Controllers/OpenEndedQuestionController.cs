@@ -5,6 +5,7 @@ using System.Net;
 using System.Web.Http;
 using System.Web.Http.Description;
 using log4net;
+using Microsoft.AspNet.Identity;
 using MyQuestionnaire.Web.Api.DBContext;
 using MyQuestionnaire.Web.Api.TypeMappers;
 using MyQuestionnaire.Web.Api.ViewModels;
@@ -19,6 +20,7 @@ namespace MyQuestionnaire.Web.Api.Controllers
         private readonly IDbContext _db;
         private readonly ILog _log;
         private readonly IOpenEndedQuestionMap _openEndedQuestionMap;
+        
 
         public OpenEndedQuestionController(IDbContext dbContext, ILog log, IOpenEndedQuestionMap openEndedQuestionMap)
         {
