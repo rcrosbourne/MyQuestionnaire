@@ -1,5 +1,6 @@
 ﻿using System.Data.Entity;
 using log4net;
+using Microsoft.AspNet.Identity.EntityFramework;
 using MyQuestionnaire.Web.Api.Models;
 using MyQuestionnaire.Web.Common;
 
@@ -17,11 +18,14 @@ namespace MyQuestionnaire.Web.Api.DBContext
     
         public MyQuestionnaireDbContext() : base("name=MyQuestionnaireDBContext")
         {
-            var dbLog = WebContainerManager.Get<ILog>();
-            Database.Log = dbLog.Debug; //Log database queries
+            //var dbLog = WebContainerManager.Get<ILog>();
+            //Database.Log = dbLog.Debug; //Log database queries
         }
         
         public DbSet<OpenEndedQuestion> OpenEndedQuestions { get; set; }
-    
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            //modelBuilder.Entity<User>().ToTable("User");
+        }
     }
 }
