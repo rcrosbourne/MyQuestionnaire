@@ -6,7 +6,7 @@ using MyQuestionnaire.Web.Common;
 
 namespace MyQuestionnaire.Web.Api.DBContext
 {
-    public class MyQuestionnaireDbContext : DbContext, IDbContext
+    public class MyQuestionnaireDbContext : IdentityDbContext<ApplicationUser>, IDbContext
     {
         // You can add custom code to this file. Changes will not be overwritten.
         // 
@@ -23,9 +23,5 @@ namespace MyQuestionnaire.Web.Api.DBContext
         }
         
         public DbSet<OpenEndedQuestion> OpenEndedQuestions { get; set; }
-        protected override void OnModelCreating(DbModelBuilder modelBuilder)
-        {
-            //modelBuilder.Entity<User>().ToTable("User");
-        }
     }
 }

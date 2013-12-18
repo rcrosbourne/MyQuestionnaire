@@ -16,7 +16,7 @@ namespace MyQuestionnaire.Web.Api
         {
             PublicClientId = "self";
 
-            UserManagerFactory = () => new UserManager<IdentityUser>(new UserStore<IdentityUser>());
+            UserManagerFactory = () => new UserManager<ApplicationUser>(new UserStore<ApplicationUser>());
 
             OAuthOptions = new OAuthAuthorizationServerOptions
             {
@@ -30,7 +30,7 @@ namespace MyQuestionnaire.Web.Api
 
         public static OAuthAuthorizationServerOptions OAuthOptions { get; private set; }
 
-        public static Func<UserManager<IdentityUser>> UserManagerFactory { get; set; }
+        public static Func<UserManager<ApplicationUser>> UserManagerFactory { get; set; }
 
         public static string PublicClientId { get; private set; }
 
