@@ -23,5 +23,7 @@ namespace MyQuestionnaire.Web.Api.DBContext
         }
         
         public DbSet<OpenEndedQuestion> OpenEndedQuestions { get; set; }
+        public DbSet<ApplicationClaim> ApplicationClaims { get; set; }
+        public DbSet<ApplicationRole> ApplicationRoles { get; set; }
     }
 }

@@ -31,7 +31,6 @@ namespace MyQuestionnaire.Web.Api.Controllers
         // GET api/OpenEndedQuestion
         public IQueryable<OpenEndedQuestionViewModel> GetOpenEndedQuestions()
         {
-            
             return _db.OpenEndedQuestions.AsEnumerable().Select(q => _openEndedQuestionMap.CreateViewModel(q)).AsQueryable();
         }
 

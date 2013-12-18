@@ -33,6 +33,17 @@ namespace MyQuestionnaire.Web.Api.Migrations
                     new OpenEndedQuestion {Description = "This is my third seeded question", Text = "Ask me a third", Answers = "This is actually better"},
                     new OpenEndedQuestion {Description = "This is my fourth seeded question", Text = "what is the final Question", Answers = "Do you believe"}
                 );
+            var claim = new ApplicationClaim();
+            claim = SetupApplicationClaims.CreateOpenEndedQuestion();
+            var role = new ApplicationRole()
+            {
+                Name = "Default"
+            };
+            role.ApplicationClaims.Add(claim);
+            claim.ApplicationRoles.Add(role);
+            context.ApplicationRoles.Add(role);
+            context.SaveChanges();
+
         }
     }
 }

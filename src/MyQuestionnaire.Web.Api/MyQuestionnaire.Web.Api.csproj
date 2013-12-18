@@ -210,14 +210,24 @@
     <Compile Include="Migrations\201312181753366_AddedApplicationUser.Designer.cs">
       <DependentUpon>201312181753366_AddedApplicationUser.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201312181949454_AddedApplicationClaim.cs" />
+    <Compile Include="Migrations\201312181949454_AddedApplicationClaim.Designer.cs">
+      <DependentUpon>201312181949454_AddedApplicationClaim.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201312182017130_AddedApplicationClaimToRoles.cs" />
+    <Compile Include="Migrations\201312182017130_AddedApplicationClaimToRoles.Designer.cs">
+      <DependentUpon>201312182017130_AddedApplicationClaimToRoles.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountBindingModels.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\ApplicationClaim.cs" />
     <Compile Include="Models\ApplicationUser.cs" />
     <Compile Include="Models\CloseEndedQuestion.cs" />
     <Compile Include="DBContext\MyQuestionnaireDBContext.cs" />
     <Compile Include="Models\OpenEndedQuestion.cs" />
     <Compile Include="Models\ModelBase.cs" />
+    <Compile Include="Models\RoleClaim.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\ApplicationOAuthProvider.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
@@ -284,6 +294,12 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201312181753366_AddedApplicationUser.resx">
       <DependentUpon>201312181753366_AddedApplicationUser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201312181949454_AddedApplicationClaim.resx">
+      <DependentUpon>201312181949454_AddedApplicationClaim.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201312182017130_AddedApplicationClaimToRoles.resx">
+      <DependentUpon>201312182017130_AddedApplicationClaimToRoles.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
