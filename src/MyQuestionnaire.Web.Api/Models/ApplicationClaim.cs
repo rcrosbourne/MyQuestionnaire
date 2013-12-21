@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -18,7 +19,19 @@ namespace MyQuestionnaire.Web.Api.Models
         [Required]
         public string  ClaimValue { get; set; }
 
-        public virtual  ICollection<ApplicationRole> ApplicationRoles  { get; set; }
+        private ICollection<ApplicationRole> _applicationRoles = new Collection<ApplicationRole>();
+
+        public virtual ICollection<ApplicationRole> ApplicationRoles
+        {
+            get
+            {
+                return _applicationRoles;
+            }
+            set
+            {
+                _applicationRoles = value;
+            }
+        }
     }
 
     public static class SetupApplicationClaims
@@ -31,7 +44,7 @@ namespace MyQuestionnaire.Web.Api.Models
         {
             return new ApplicationClaim()
             {
-                ClaimType = "CAN_CREATE",
+                ClaimType = "Create",
                 ClaimValue = "OpenEndedQuestion"
             };
         }
@@ -40,7 +53,7 @@ namespace MyQuestionnaire.Web.Api.Models
         {
             return new ApplicationClaim()
             {
-                ClaimType = "CAN_READ_ALL",
+                ClaimType = "ReadAll",
                 ClaimValue = "OpenEndedQuestion"
             };
         }
@@ -49,7 +62,7 @@ namespace MyQuestionnaire.Web.Api.Models
         {
             return new ApplicationClaim()
             {
-                ClaimType = "CAN_READ_BY_ID",
+                ClaimType = "ReadById",
                 ClaimValue = "OpenEndedQuestion"
             };
         }
@@ -58,25 +71,53 @@ namespace MyQuestionnaire.Web.Api.Models
         {
             return new ApplicationClaim()
             {
-                ClaimType = "CAN_UPDATE_ALL",
+                ClaimType = "UpdateAll",
                 ClaimValue = "OpenEndedQuestion"
             };
         }
 
-        public static ApplicationClaim UpdateOneEndedQuestion()
+        public static ApplicationClaim UpdateByIdOpenEndedQuestion()
         {
             return new ApplicationClaim()
             {
-                ClaimType = "CAN_UPDATE_ONE",
+                ClaimType = "UpdateById",
                 ClaimValue = "OpenEndedQuestion"
             };
         }
-        public static ApplicationClaim UpdateAllEndedQuestion()
+        public static ApplicationClaim DeleteAllOpenEndedQuestion()
         {
             return new ApplicationClaim()
             {
-                ClaimType = "CAN_UPDATE_ALL",
+                ClaimType = "DeleteAll",
                 ClaimValue = "OpenEndedQuestion"
+            };
+        }
+        public static ApplicationClaim DeleteByIdOpenEndedQuestion()
+        {
+            return new ApplicationClaim()
+            {
+                ClaimType = "DeleteById",
+                ClaimValue = "OpenEndedQuestion"
+            };
+        }
+        public static ApplicationClaim AllOnOpenEndedQuestion()
+        {
+            return new ApplicationClaim()
+            {
+                ClaimType = "All",
+                ClaimValue = "OpenEndedQuestion"
+            };
+        }
+        /// <summary>
+        /// This allows you to do all operations on all resources
+        /// </summary>
+        /// <returns></returns>
+        public static ApplicationClaim AllOnAll()
+        {
+            return new ApplicationClaim()
+            {
+                ClaimType = "All",
+                ClaimValue = "All"
             };
         }
     }

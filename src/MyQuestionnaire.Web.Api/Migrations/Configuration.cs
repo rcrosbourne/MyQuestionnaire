@@ -41,89 +41,94 @@ namespace MyQuestionnaire.Web.Api.Migrations
             //        new OpenEndedQuestion {Description = "This is my third seeded question", Text = "Ask me a third", Answers = "This is actually better"},
             //        new OpenEndedQuestion {Description = "This is my fourth seeded question", Text = "what is the final Question", Answers = "Do you believe"}
             //    );
-            var openEndedQuestions = new List<OpenEndedQuestion>
-            {
-                new OpenEndedQuestion
-                {
-                    Description = "This is my first seeded question",
-                    Text = "Ask me anything",
-                    Answers = "How are u alive|Why are you here"
-                },
-                new OpenEndedQuestion
-                {
-                    Description = "This is my second seeded question",
-                    Text = "Ask me another question",
-                    Answers = "I like cookies"
-                },
-                new OpenEndedQuestion
-                {
-                    Description = "This is my third seeded question",
-                    Text = "Ask me a third",
-                    Answers = "This is actually better"
-                },
-                new OpenEndedQuestion
-                {
-                    Description = "This is my fourth seeded question",
-                    Text = "what is the final Question",
-                    Answers = "Do you believe"
-                }
-
-            };
-            openEndedQuestions.ForEach(o => context.OpenEndedQuestions.Add(o));
-            context.SaveChanges();
-
-            var claims = new List<ApplicationClaim>
-            {
-                SetupApplicationClaims.CreateOpenEndedQuestion(),
-                SetupApplicationClaims.ReadAllOpenEndedQuestion(),
-                SetupApplicationClaims.ReadByIdOpenEndedQuestion(),
-                SetupApplicationClaims.UpdateAllEndedQuestion(),
-                SetupApplicationClaims.UpdateAllOpenEndedQuestion(),
-                SetupApplicationClaims.UpdateOneEndedQuestion()
-            };
-            claims.ForEach(c => context.ApplicationClaims.Add(c));
-            context.SaveChanges();
-            //Add Roles
-            var roles = new List<ApplicationRole>
-            {
-                new ApplicationRole()
-                {
-                    Name = "Default"
-                },
-                new ApplicationRole()
-                {
-                    Name = "Admin"
-                }
-            };
-            roles.ForEach(r => context.ApplicationRoles.Add(r));
-            context.SaveChanges();
-            //Create bindings between Roles and Claims
-            //Give read access to default...give all to admin
-            var adminRole = context.ApplicationRoles.SingleOrDefault(ar => ar.Name == "Admin");
-            if (adminRole != null)
-            {
-                adminRole.ApplicationClaims  = new Collection<ApplicationClaim>();
-                //Add all claims to admin
-                foreach (var applicationClaim in context.ApplicationClaims)
-                {
-                    adminRole.ApplicationClaims.Add(applicationClaim);
-                }
-            }
-            context.SaveChanges();
-            var newUser = new ApplicationUser()
-            {
-                UserName = "rcrosbourne"
-            };
-            //var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>());
-            //await userManager.CreateAsync(newUser, "password123");
-            
-            newUser.Roles.Add(new IdentityUserRole()
-            {
-                Role = adminRole
-            });
-            context.Users.Add(newUser);
             try
             {
+                var openEndedQuestions = new List<OpenEndedQuestion>
+                {
+                    new OpenEndedQuestion
+                    {
+                        Description = "This is my first seeded question",
+                        Text = "Ask me anything",
+                        Answers = "How are u alive|Why are you here"
+                    },
+                    new OpenEndedQuestion
+                    {
+                        Description = "This is my second seeded question",
+                        Text = "Ask me another question",
+                        Answers = "I like cookies"
+                    },
+                    new OpenEndedQuestion
+                    {
+                        Description = "This is my third seeded question",
+                        Text = "Ask me a third",
+                        Answers = "This is actually better"
+                    },
+                    new OpenEndedQuestion
+                    {
+                        Description = "This is my fourth seeded question",
+                        Text = "what is the final Question",
+                        Answers = "Do you believe"
+                    }
+
+                };
+                openEndedQuestions.ForEach(o => context.OpenEndedQuestions.Add(o));
+                context.SaveChanges();
+
+                var claims = new List<ApplicationClaim>
+                {
+                    SetupApplicationClaims.AllOnAll(),
+                    SetupApplicationClaims.AllOnOpenEndedQuestion(),
+                    SetupApplicationClaims.CreateOpenEndedQuestion(),
+                    SetupApplicationClaims.ReadAllOpenEndedQuestion(),
+                    SetupApplicationClaims.ReadByIdOpenEndedQuestion(),
+                    SetupApplicationClaims.UpdateAllOpenEndedQuestion(),
+                    SetupApplicationClaims.UpdateAllOpenEndedQuestion(),
+                    SetupApplicationClaims.UpdateByIdOpenEndedQuestion()
+                };
+                claims.ForEach(c => context.ApplicationClaims.Add(c));
+                context.SaveChanges();
+                //Add Roles
+                var adminRole = new ApplicationRole()
+                {
+                    Name = "Admin"
+                };
+                var defaultRole = new ApplicationRole()
+                {
+                    Name = "Default"
+                };
+
+                adminRole.ApplicationClaims.Add(context.ApplicationClaims.SingleOrDefault(c => c.Id == 1));
+                context.ApplicationRoles.Add(adminRole);
+                context.ApplicationRoles.Add(defaultRole);
+                context.SaveChanges();
+
+
+                //Create bindings between Roles and Claims
+               // Give read access to default...give all to admin
+                //var adminRole = context.ApplicationRoles.SingleOrDefault(ar => ar.Name == "Admin");
+                //Add All claim to Admin
+                //GetAll claim 
+               
+                context.SaveChanges();
+                var newUser = new ApplicationUser()
+                {
+                    UserName = "rcrosbourne"
+                };
+                //var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>());
+                //await userManager.CreateAsync(newUser, "password123");
+            
+                newUser.Roles.Add(new IdentityUserRole()
+                {
+                    Role = adminRole
+                });
+                context.Users.Add(newUser);
+                
+                context.ApiClients.Add(new ApiClient()
+                {
+                    Name = "WebClient",
+                    IsBlacklisted = false
+                });
+            
                 context.SaveChanges();
             }
             catch (DbEntityValidationException dbValEx)
@@ -144,8 +149,6 @@ namespace MyQuestionnaire.Web.Api.Migrations
                 throw new DbEntityValidationException(string.Format("Validation errors\r\n{0}"
                  , outputLines), dbValEx);
             }
-            //context.SaveChanges();
-
         }
     }
 }

@@ -13,7 +13,7 @@ namespace MyQuestionnaire.Web.Api.Providers
     // this is not production ready!
     public class SimpleRefreshTokenProvider : IAuthenticationTokenProvider
     {
-        private static ConcurrentDictionary<string, AuthenticationTicket> _refreshTokens = new ConcurrentDictionary<string, AuthenticationTicket>();
+        private static readonly ConcurrentDictionary<string, AuthenticationTicket> _refreshTokens = new ConcurrentDictionary<string, AuthenticationTicket>();
 
         public async Task CreateAsync(AuthenticationTokenCreateContext context)
         {

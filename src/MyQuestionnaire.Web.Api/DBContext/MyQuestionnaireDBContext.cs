@@ -14,17 +14,26 @@ namespace MyQuestionnaire.Web.Api.DBContext
         // automatically whenever you change your model schema, please use data migrations.
         // For more information refer to the documentation:
         // http://msdn.microsoft.com/en-us/data/jj591621.aspx
-        //private ILog _dbLog;
-    
-        public MyQuestionnaireDbContext() : base("name=MyQuestionnaireDBContext")
+        public MyQuestionnaireDbContext(ILog logger) : base("name=MyQuestionnaireDBContext")
         {
-            //var dbLog = WebContainerManager.Get<ILog>();
-            //Database.Log = dbLog.Debug; //Log database queries
+            Database.Log = logger.Debug;
         }
+
+        public MyQuestionnaireDbContext()
+            : base("name=MyQuestionnaireDBContext")
+        {
+            
+        }
+        //public MyQuestionnaireDbContext() : this(WebContainerManager.Get<ILog>())
+        //{
+        //    //var dbLog = WebContainerManager.Get<ILog>();
+        //    //Database.Log = dbLog.Debug; //Log database queries
+        //}
         
         public DbSet<OpenEndedQuestion> OpenEndedQuestions { get; set; }
         public DbSet<ApplicationClaim> ApplicationClaims { get; set; }
         public DbSet<ApplicationRole> ApplicationRoles { get; set; }
+        public DbSet<ApiClient> ApiClients { get; set; }
        // public DbSet<RoleClaim> RoleClaims { get; set; }
     }
 }

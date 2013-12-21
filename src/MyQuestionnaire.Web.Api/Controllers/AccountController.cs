@@ -331,22 +331,22 @@ namespace MyQuestionnaire.Web.Api.Controllers
                 
             };
             //Setup user with userclaims associated with the default role
-            var singleOrDefault = dbContext.ApplicationRoles.SingleOrDefault(ar => ar.Name == "Admin");
-            if (singleOrDefault != null)
-            {
-                var claims =
-                    singleOrDefault.ApplicationClaims;
-                claims.ForEach(c => user.Claims.Add(new IdentityUserClaim()
-                {
-                    ClaimType = c.ClaimType,
-                    ClaimValue = c.ClaimValue
-                }));
-                user.Claims.Add(new IdentityUserClaim()
-                {
-                    ClaimType = ClaimTypes.Role,
-                    ClaimValue = "Admin"
-                });
-            }
+            //var singleOrDefault = dbContext.ApplicationRoles.SingleOrDefault(ar => ar.Name == "Admin");
+            //if (singleOrDefault != null)
+            //{
+            //    var claims =
+            //        singleOrDefault.ApplicationClaims;
+            //    claims.ForEach(c => user.Claims.Add(new IdentityUserClaim()
+            //    {
+            //        ClaimType = c.ClaimType,
+            //        ClaimValue = c.ClaimValue
+            //    }));
+            //    user.Claims.Add(new IdentityUserClaim()
+            //    {
+            //        ClaimType = ClaimTypes.Role,
+            //        ClaimValue = "Admin"
+            //    });
+            //}
 
             var result = await UserManager.CreateAsync(user, model.Password);
             IHttpActionResult errorResult = GetErrorResult(result);

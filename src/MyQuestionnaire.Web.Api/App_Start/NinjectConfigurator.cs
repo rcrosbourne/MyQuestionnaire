@@ -1,7 +1,9 @@
-﻿using System.Web.Http;
+﻿using System;
+using System.Web.Http;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using MyQuestionnaire.Web.Api.DBContext;
+using MyQuestionnaire.Web.Api.Models;
 using MyQuestionnaire.Web.Api.TypeMappers;
 using MyQuestionnaire.Web.Common;
 using Ninject;
@@ -36,6 +38,9 @@ namespace MyQuestionnaire.Web.Api.App_Start
 
             //Db Context
             container.Bind<IDbContext>().To<MyQuestionnaireDbContext>();
+            //UserManagerFactory
+            //ConfigureUserManagerFactory(container);
+            
 
             //Mappings
             container.Bind<IOpenEndedQuestionMap>().To<OpenEndedQuestionMap>();

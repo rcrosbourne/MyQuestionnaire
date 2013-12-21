@@ -4,6 +4,7 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Owin;
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.OAuth;
+using MyQuestionnaire.Web.Api.DBContext;
 using MyQuestionnaire.Web.Api.Models;
 using Owin;
 using MyQuestionnaire.Web.Api.Providers;
@@ -36,9 +37,9 @@ namespace MyQuestionnaire.Web.Api
             OAuthOptions = new OAuthAuthorizationServerOptions
             {
                 TokenEndpointPath = new PathString("/token"),
-                Provider = new SimpleAuthorizationServerProvider(),//new ApplicationOAuthProvider(PublicClientId, UserManagerFactory),
+                Provider = new SimpleAuthorizationServerProvider(UserManagerFactory),//new ApplicationOAuthProvider(PublicClientId, UserManagerFactory),
                 RefreshTokenProvider = new SimpleRefreshTokenProvider(),
-                AccessTokenExpireTimeSpan = TimeSpan.FromHours(1),
+                AccessTokenExpireTimeSpan = TimeSpan.FromHours(1.0),
                 AllowInsecureHttp = true
             };
         }

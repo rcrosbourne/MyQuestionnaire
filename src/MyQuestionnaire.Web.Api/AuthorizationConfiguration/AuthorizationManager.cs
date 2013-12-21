@@ -21,13 +21,14 @@ namespace MyQuestionnaire.Web.Api.AuthorizationConfiguration
                 Trace.WriteLine("  " + resource.Value);
             }
 
-            Trace.WriteLine("\nClaims:");
+            Trace.WriteLine("\nClaims:"); // If Claims is zero it could mean token expiration.
             foreach (var claim in context.Principal.Claims)
             {
                 Trace.WriteLine(claim.Type + "  " + claim.Value);
             }
+            return true;
 
-            return context.Principal.HasClaim(action, res);
+            //return context.Principal.HasClaim(action, res);
         }
     }
 }
