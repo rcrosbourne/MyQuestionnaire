@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
 using System.Net.Http;
 using System.Security.Claims;
 using System.Security.Cryptography;
@@ -11,10 +13,12 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.OAuth;
+using MyQuestionnaire.Web.Api.DBContext;
 using MyQuestionnaire.Web.Api.Models;
 using MyQuestionnaire.Web.Api.Providers;
 using MyQuestionnaire.Web.Api.Results;
 using MyQuestionnaire.Web.Common;
+using WebGrease.Css.Extensions;
 
 namespace MyQuestionnaire.Web.Api.Controllers
 {
@@ -24,7 +28,7 @@ namespace MyQuestionnaire.Web.Api.Controllers
     public class AccountController : ApiController
     {
         private const string LocalLoginProvider = "Local";
-
+        private MyQuestionnaireDbContext dbContext = new MyQuestionnaireDbContext();
         public AccountController()
             : this(Startup.UserManagerFactory(), Startup.OAuthOptions.AccessTokenFormat)
         {
@@ -321,12 +325,30 @@ namespace MyQuestionnaire.Web.Api.Controllers
                 return BadRequest(ModelState);
             }
 
-            ApplicationUser user = new ApplicationUser
+            var user = new ApplicationUser
             {
                 UserName = model.UserName
+                
             };
+            //Setup user with userclaims associated with the default role
+            var singleOrDefault = dbContext.ApplicationRoles.SingleOrDefault(ar => ar.Name == "Admin");
+            if (singleOrDefault != null)
+            {
+                var claims =
+                    singleOrDefault.ApplicationClaims;
+                claims.ForEach(c => user.Claims.Add(new IdentityUserClaim()
+                {
+                    ClaimType = c.ClaimType,
+                    ClaimValue = c.ClaimValue
+                }));
+                user.Claims.Add(new IdentityUserClaim()
+                {
+                    ClaimType = ClaimTypes.Role,
+                    ClaimValue = "Admin"
+                });
+            }
 
-            IdentityResult result = await UserManager.CreateAsync(user, model.Password);
+            var result = await UserManager.CreateAsync(user, model.Password);
             IHttpActionResult errorResult = GetErrorResult(result);
 
             if (errorResult != null)

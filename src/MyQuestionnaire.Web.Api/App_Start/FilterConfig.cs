@@ -1,5 +1,6 @@
 ﻿using System.Web;
 using System.Web.Mvc;
+using Thinktecture.IdentityModel.Authorization.WebApi;
 
 namespace MyQuestionnaire.Web.Api
 {

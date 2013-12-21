@@ -10,11 +10,13 @@ using MyQuestionnaire.Web.Api.DBContext;
 using MyQuestionnaire.Web.Api.TypeMappers;
 using MyQuestionnaire.Web.Api.ViewModels;
 using MyQuestionnaire.Web.Common;
+using Thinktecture.IdentityModel.Authorization.WebApi;
 
 namespace MyQuestionnaire.Web.Api.Controllers
 {
     [LoggingSession]
-    [Authorize]
+    //[Authorize]
+    //[ClaimsAuthorize]
     public class OpenEndedQuestionController : ApiController
     {
         private readonly IDbContext _db;
@@ -29,13 +31,16 @@ namespace MyQuestionnaire.Web.Api.Controllers
             _openEndedQuestionMap = openEndedQuestionMap;
         }
         // GET api/OpenEndedQuestion
-        public IQueryable<OpenEndedQuestionViewModel> GetOpenEndedQuestions()
+        [ClaimsAuthorize]
+        [HttpGet]
+        public IQueryable<OpenEndedQuestionViewModel> CAN_READ_ALL()
         {
             return _db.OpenEndedQuestions.AsEnumerable().Select(q => _openEndedQuestionMap.CreateViewModel(q)).AsQueryable();
         }
 
         // GET api/OpenEndedQuestion/5
-        public IHttpActionResult GetOpenEndedQuestion(int id)
+        [ClaimsAuthorize]
+        public IHttpActionResult CAN_READ_ONE(int id)
         {
             var openendedquestion = _db.OpenEndedQuestions.Find(id);
             if (openendedquestion == null)

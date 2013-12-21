@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Web.Http;
 using Microsoft.Owin.Security.OAuth;
 using Newtonsoft.Json.Serialization;
+using Thinktecture.IdentityModel.Authorization.WebApi;
 
 namespace MyQuestionnaire.Web.Api
 {
@@ -16,9 +17,12 @@ namespace MyQuestionnaire.Web.Api
             // Configure Web API to use only bearer token authentication.
             config.SuppressDefaultHostAuthentication();
             config.Filters.Add(new HostAuthenticationFilter(OAuthDefaults.AuthenticationType));
+            //ClaimsFilter
+            config.Filters.Add(new ClaimsAuthorizeAttribute());
 
             // Web API routes
             config.MapHttpAttributeRoutes();
+            
 
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",

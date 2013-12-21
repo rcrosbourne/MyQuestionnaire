@@ -12,6 +12,21 @@ namespace MyQuestionnaire.Web.Api
 {
     public partial class Startup
     {
+        //static Startup()
+        //{
+        //    PublicClientId = "self";
+
+        //    UserManagerFactory = () => new UserManager<ApplicationUser>(new UserStore<ApplicationUser>());
+
+        //    OAuthOptions = new OAuthAuthorizationServerOptions
+        //    {
+        //        TokenEndpointPath = new PathString("/Token"),
+        //        Provider = new ApplicationOAuthProvider(PublicClientId, UserManagerFactory),
+        //        AuthorizeEndpointPath = new PathString("/api/Account/ExternalLogin"),
+        //        AccessTokenExpireTimeSpan = TimeSpan.FromDays(14),
+        //        AllowInsecureHttp = true
+        //    };
+        //}
         static Startup()
         {
             PublicClientId = "self";
@@ -20,10 +35,10 @@ namespace MyQuestionnaire.Web.Api
 
             OAuthOptions = new OAuthAuthorizationServerOptions
             {
-                TokenEndpointPath = new PathString("/Token"),
-                Provider = new ApplicationOAuthProvider(PublicClientId, UserManagerFactory),
-                AuthorizeEndpointPath = new PathString("/api/Account/ExternalLogin"),
-                AccessTokenExpireTimeSpan = TimeSpan.FromDays(14),
+                TokenEndpointPath = new PathString("/token"),
+                Provider = new SimpleAuthorizationServerProvider(),//new ApplicationOAuthProvider(PublicClientId, UserManagerFactory),
+                RefreshTokenProvider = new SimpleRefreshTokenProvider(),
+                AccessTokenExpireTimeSpan = TimeSpan.FromHours(1),
                 AllowInsecureHttp = true
             };
         }
@@ -39,11 +54,12 @@ namespace MyQuestionnaire.Web.Api
         {
             // Enable the application to use a cookie to store information for the signed in user
             // and to use a cookie to temporarily store information about a user logging in with a third party login provider
-            app.UseCookieAuthentication(new CookieAuthenticationOptions());
-            app.UseExternalSignInCookie(DefaultAuthenticationTypes.ExternalCookie);
-
+           // app.UseCookieAuthentication(new CookieAuthenticationOptions());
+           // app.UseExternalSignInCookie(DefaultAuthenticationTypes.ExternalCookie);
+            app.UseOAuthAuthorizationServer(OAuthOptions);
+            app.UseOAuthBearerAuthentication(new OAuthBearerAuthenticationOptions());
             // Enable the application to use bearer tokens to authenticate users
-            app.UseOAuthBearerTokens(OAuthOptions);
+            //app.UseOAuthBearerTokens(OAuthOptions);
 
             // Uncomment the following lines to enable logging in with third party login providers
             //app.UseMicrosoftAccountAuthentication(

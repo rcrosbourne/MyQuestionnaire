@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 
@@ -8,25 +9,16 @@ namespace MyQuestionnaire.Web.Api.Models
 {
     public class ApplicationClaim 
     {
+      
         public int Id { get; set; }
+       
         [Required]
         public string ClaimType { get; set; }
+       
         [Required]
         public string  ClaimValue { get; set; }
-        
-        private List<ApplicationRole> _applicationRoles = new List<ApplicationRole>();
 
-        public List<ApplicationRole> ApplicationRoles
-        {
-            get
-            {
-                return _applicationRoles;
-            }
-            set
-            {
-                _applicationRoles = value;
-            }
-        }
+        public virtual  ICollection<ApplicationRole> ApplicationRoles  { get; set; }
     }
 
     public static class SetupApplicationClaims
