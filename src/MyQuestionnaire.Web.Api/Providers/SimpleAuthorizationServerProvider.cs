@@ -32,31 +32,28 @@ namespace MyQuestionnaire.Web.Api.Providers
         {
             // validate client credentials
             // should be stored securely (salted, hashed, iterated)
-            context.Validated();
-            return Task.FromResult<object>(null);
-            using (_dbContext)
+            
+            string id, secret;
+            if (context.TryGetBasicCredentials(out id, out secret))
             {
-                string id, secret;
-                if (context.TryGetBasicCredentials(out id, out secret))
+                var client = _dbContext
+                    .ApiClients
+                    .AsEnumerable()
+                    .SingleOrDefault(c => c.Id.ToString() == id && c.IsBlacklisted == false);
+
+                if (client != null)
                 {
-                    var client = _dbContext
-                        .ApiClients
-                        .AsEnumerable()
-                        .SingleOrDefault(c => c.Id.ToString() == id && c.IsBlacklisted == false);
-
-                    if (client != null)
-                    {
-                        // need to make the client_id available for later security checks
-                        context.OwinContext.Set("as:client_id", client.Id.ToString());
-                        //context.OwinContext.Set("as:client_name", client.Name);
-                        context.Validated();
-                        return Task.FromResult<object>(null);
-                    }
-
+                    // need to make the client_id available for later security checks
+                    context.OwinContext.Set("as:client_id", client.Id.ToString());
+                    //context.OwinContext.Set("as:client_name", client.Name);
+                    context.Validated();
+                    return Task.FromResult<object>(null);
                 }
-                context.Rejected();
-                return Task.FromResult<object>(null);
+
             }
+            context.Rejected();
+            return Task.FromResult<object>(null);
+            
             
         }
 
@@ -79,10 +76,7 @@ namespace MyQuestionnaire.Web.Api.Providers
                 //var id = new ClaimsIdentity(context.Options.AuthenticationType); 
                 //id.AddClaim(new Claim(ClaimTypes.NameIdentifier, user.UserName));
                 
-                var props = new AuthenticationProperties(new Dictionary<string, string>
-                {
-                    { "as:client_id", "WebClient" }//{ "as:client_id", context.ClientId }
-                });
+               
                 //var ticket = new AuthenticationTicket(id, props);
                 //context.Validated(ticket);
 
@@ -90,7 +84,7 @@ namespace MyQuestionnaire.Web.Api.Providers
                     context.Options.AuthenticationType);
                 ClaimsIdentity cookiesIdentity = await userManager.CreateIdentityAsync(user,
                     CookieAuthenticationDefaults.AuthenticationType);
-                AuthenticationProperties properties = CreateProperties(user.UserName);
+                AuthenticationProperties properties = CreateProperties(user.UserName, context.ClientId);
                 var ticket = new AuthenticationTicket(oAuthIdentity, properties);
                 context.Validated(ticket);
                 context.Request.Context.Authentication.SignIn(cookiesIdentity);
@@ -98,12 +92,12 @@ namespace MyQuestionnaire.Web.Api.Providers
             }
         }
 
-        public static AuthenticationProperties CreateProperties(string userName)
+        public static AuthenticationProperties CreateProperties(string userName, string clientId)
         {
             IDictionary<string, string> data = new Dictionary<string, string>
             {
                 { "userName", userName },
-                { "as:client_id", "WebClient" }
+                { "as:client_id", clientId }
             };
             return new AuthenticationProperties(data);
         }
@@ -123,7 +117,7 @@ namespace MyQuestionnaire.Web.Api.Providers
             //Ensure that the user is still a apart of the roles.
             using (var userManager = _userManagerFactory())
             {
-                var user = await userManager.FindByNameAsync("ray"); //<--Fixed this. Get the current name property
+                var user = await userManager.FindByNameAsync(existingIdentity.Name); //<--Fixed this. Get the current name property
 
                 if (user == null)
                 {
@@ -135,8 +129,6 @@ namespace MyQuestionnaire.Web.Api.Providers
                 }
 
                 var newId = await userManager.CreateIdentityAsync(user, context.Options.AuthenticationType);
-                //var id = new ClaimsIdentity(context.Options.AuthenticationType); 
-                //id.AddClaim(new Claim(ClaimTypes.NameIdentifier, user.UserName));
                 var newTicket = new AuthenticationTicket(newId, context.Ticket.Properties);
                 context.Validated(newTicket);
             }
