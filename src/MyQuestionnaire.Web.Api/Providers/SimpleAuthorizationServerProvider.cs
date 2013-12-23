@@ -37,7 +37,7 @@ namespace MyQuestionnaire.Web.Api.Providers
                 var client = _dbContext
                     .ApiClients
                     .AsEnumerable()
-                    .SingleOrDefault(c => c.Name == id && c.Id.ToString() == secret && c.IsBlacklisted == false);
+                    .SingleOrDefault(c => c.Id.ToString() == id && c.IsBlacklisted == false);
                 
                 if (client != null)
                 {
@@ -78,36 +78,7 @@ namespace MyQuestionnaire.Web.Api.Providers
                 });
                 var ticket = new AuthenticationTicket(id, props);
                 context.Validated(ticket);
-                
-                //ClaimsIdentity oAuthIdentity = await userManager.CreateIdentityAsync(user,
-                //    context.Options.AuthenticationType);
-                //ClaimsIdentity cookiesIdentity = await userManager.CreateIdentityAsync(user,
-                //    CookieAuthenticationDefaults.AuthenticationType);
-                //AuthenticationProperties properties = CreateProperties(user.UserName);
-                //ticket = new AuthenticationTicket(oAuthIdentity, properties);
-                //context.Validated(ticket);
-                //context.Request.Context.Authentication.SignIn(cookiesIdentity);
             }
-
-            //if (context.UserName != context.Password)
-            //{
-            //    context.Rejected();
-            //    return;
-            //}
-
-            //// create identity
-            //id = new ClaimsIdentity(context.Options.AuthenticationType);
-            //id.AddClaim(new Claim("sub", context.UserName));
-            //id.AddClaim(new Claim("role", "user"));
-
-            //// create metadata to pass on to refresh token provider
-            //props = new AuthenticationProperties(new Dictionary<string, string>
-            //{
-            //    { "as:client_id", context.ClientId }
-            //});
-
-            //ticket = new AuthenticationTicket(id, props);
-            //context.Validated(ticket);
         }
 
         public override async Task GrantRefreshToken(OAuthGrantRefreshTokenContext context)
@@ -121,15 +92,28 @@ namespace MyQuestionnaire.Web.Api.Providers
                 context.Rejected();
                 return;
             }
-
+            var existingIdentity = new ClaimsIdentity(context.Ticket.Identity);
             //Ensure that the user is still a apart of the roles.
-            
-            // chance to change authentication ticket for refresh token requests
-            var newId = new ClaimsIdentity(context.Ticket.Identity);
-            newId.AddClaim(new Claim("newClaim", "refreshToken"));
+            using (var userManager = _userManagerFactory())
+            {
+                var user = await userManager.FindByNameAsync("ray"); //<--Fixed this. Get the current name property
 
-            var newTicket = new AuthenticationTicket(newId, context.Ticket.Properties);
-            context.Validated(newTicket);
+                if (user == null)
+                {
+
+                    context.SetError("invalid_user",
+                        string.Format("{0} not a valid user", existingIdentity.NameClaimType));
+                    context.Rejected();
+                    return;
+                }
+
+                var newId = await userManager.CreateIdentityAsync(user, context.Options.AuthenticationType);
+                ;
+                //var id = new ClaimsIdentity(context.Options.AuthenticationType); 
+                //id.AddClaim(new Claim(ClaimTypes.NameIdentifier, user.UserName));
+                var newTicket = new AuthenticationTicket(newId, context.Ticket.Properties);
+                context.Validated(newTicket);
+            }
         }
     }
 }
