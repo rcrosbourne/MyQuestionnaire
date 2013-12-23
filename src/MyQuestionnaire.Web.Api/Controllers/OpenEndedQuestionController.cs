@@ -31,16 +31,16 @@ namespace MyQuestionnaire.Web.Api.Controllers
             _openEndedQuestionMap = openEndedQuestionMap;
         }
         // GET api/OpenEndedQuestion
-        [ClaimsAuthorize]
+        [ClaimsAuthorize("GetAllOpenEndedQuestion", "OpenEndedQuestion")]
         [HttpGet]
-        public IQueryable<OpenEndedQuestionViewModel> CAN_READ_ALL()
+        public IQueryable<OpenEndedQuestionViewModel> GetAllOpenEndedQuestion()
         {
             return _db.OpenEndedQuestions.AsEnumerable().Select(q => _openEndedQuestionMap.CreateViewModel(q)).AsQueryable();
         }
 
         // GET api/OpenEndedQuestion/5
-        [ClaimsAuthorize]
-        public IHttpActionResult CAN_READ_ONE(int id)
+        [ClaimsAuthorize("GetOneOpenEndedQuestion", "OpenEndedQuestion")]
+        public IHttpActionResult GetOneOpenEndedQuestion(int id)
         {
             var openendedquestion = _db.OpenEndedQuestions.Find(id);
             if (openendedquestion == null)
@@ -52,6 +52,7 @@ namespace MyQuestionnaire.Web.Api.Controllers
         }
 
         // PUT api/OpenEndedQuestion/5
+        [ClaimsAuthorize("PutOpenEndedQuestion", "OpenEndedQuestion")]
         public IHttpActionResult PutOpenEndedQuestion(int id, OpenEndedQuestionViewModel openendedquestionViewModel)
         {
             if (!ModelState.IsValid)
@@ -83,7 +84,7 @@ namespace MyQuestionnaire.Web.Api.Controllers
 
             return StatusCode(HttpStatusCode.NoContent);
         }
-
+        [ClaimsAuthorize("PostOpenEndedQuestion", "OpenEndedQuestion")]
         // POST api/OpenEndedQuestion
         [ResponseType(typeof(OpenEndedQuestionViewModel))]
         public IHttpActionResult PostOpenEndedQuestion(OpenEndedQuestionViewModel openendedQuestionViewModeluestion)
@@ -98,7 +99,7 @@ namespace MyQuestionnaire.Web.Api.Controllers
 
             return CreatedAtRoute("DefaultApi", new { id = openendedquestionModel.Id }, _openEndedQuestionMap.CreateViewModel(openendedquestionModel));
         }
-
+        [ClaimsAuthorize("DeleteOpenEndedQuestion", "OpenEndedQuestion")]
         // DELETE api/OpenEndedQuestion/5
         [ResponseType(typeof(OpenEndedQuestionViewModel))]
         public IHttpActionResult DeleteOpenEndedQuestion(int id)

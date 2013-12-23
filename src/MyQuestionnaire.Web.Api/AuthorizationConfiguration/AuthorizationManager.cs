@@ -1,6 +1,13 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Collections.Generic;
+using System.Data.Entity.Core.Common.CommandTrees;
+using System.Diagnostics;
 using System.Linq;
 using System.Security.Claims;
+using Microsoft.Ajax.Utilities;
+using MyQuestionnaire.Web.Api.DBContext;
+using MyQuestionnaire.Web.Api.Models;
+using WebGrease.Css.Extensions;
 
 namespace MyQuestionnaire.Web.Api.AuthorizationConfiguration
 {
@@ -8,27 +15,46 @@ namespace MyQuestionnaire.Web.Api.AuthorizationConfiguration
     {
         public override bool CheckAccess(AuthorizationContext context)
         {
-            Trace.WriteLine("\n\nClaimsAuthorizationManager\n_______________________\n");
+            /*
+             * Validationa Sequence check
+             * 1) Check Principal Claims
+             *      If principal has zero claims then return false (token expiration most likely)
+             *      else get the role claims 
+             *          if prinipal has admin role then return true
+             *          else build a unique list of claims from the role claims
+             *          then check to see if principal has a claim otherwise return false
+             */
 
-            Trace.WriteLine("\nAction:"); //Name of the API Method
-            var action = context.Action.First().Value; //API MethodName
-            var res = context.Resource.First().Value;
-            Trace.WriteLine("  " + action) ;
-
-            Trace.WriteLine("\nResources:");
-            foreach (var resource in context.Resource)
+            var principalClaims = context.Principal.Claims;
+            var principalClaimsArrary = principalClaims as Claim[] ?? principalClaims.ToArray();
+            if (!principalClaimsArrary.Any())
             {
-                Trace.WriteLine("  " + resource.Value);
+                return false;
+            }
+            //So we have lets get all the role claims
+            var roleClaims = principalClaimsArrary.Where(p => p.Type == ClaimTypes.Role).Select(p => p.Value);
+
+            var roleClaimsArray = roleClaims as string[] ?? roleClaims.ToArray();
+            if (!roleClaimsArray.Any())
+            {
+                return false;
             }
 
-            Trace.WriteLine("\nClaims:"); // If Claims is zero it could mean token expiration.
-            foreach (var claim in context.Principal.Claims)
+            //get the db context
+            var dbContext = new MyQuestionnaireDbContext();
+            var resource = context.Resource.First().Value;
+            var action = context.Action.First().Value;
+            var applicationClaims = new List<ApplicationClaim>();
+            dbContext.ApplicationRoles.ForEach(role =>
             {
-                Trace.WriteLine(claim.Type + "  " + claim.Value);
-            }
-            return true;
-
-            //return context.Principal.HasClaim(action, res);
+                
+                if (roleClaimsArray.Contains(role.Name))
+                {
+                    applicationClaims.AddRange(role.ApplicationClaims.ToList());
+                } 
+            });
+            applicationClaims = applicationClaims.Distinct().ToList();
+            return applicationClaims.Any(c => c.ClaimType == action && c.ClaimValue == resource);
         }
     }
 }

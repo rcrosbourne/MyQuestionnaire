@@ -5,12 +5,10 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
-using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.OAuth;
 using MyQuestionnaire.Web.Api.DBContext;
 using MyQuestionnaire.Web.Api.Models;
 using MyQuestionnaire.Web.Common;
-using WebGrease.Css.Extensions;
 
 namespace MyQuestionnaire.Web.Api.Providers
 {
@@ -45,7 +43,7 @@ namespace MyQuestionnaire.Web.Api.Providers
                 {
                     // need to make the client_id available for later security checks
                     context.OwinContext.Set("as:client_id", client.Id.ToString());
-                    context.OwinContext.Set("as:client_name", client.Name);
+                    //context.OwinContext.Set("as:client_name", client.Name);
                     context.Validated();
                     return Task.FromResult<object>(null);
                 }
@@ -124,6 +122,8 @@ namespace MyQuestionnaire.Web.Api.Providers
                 return;
             }
 
+            //Ensure that the user is still a apart of the roles.
+            
             // chance to change authentication ticket for refresh token requests
             var newId = new ClaimsIdentity(context.Ticket.Identity);
             newId.AddClaim(new Claim("newClaim", "refreshToken"));

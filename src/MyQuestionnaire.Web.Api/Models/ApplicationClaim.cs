@@ -40,84 +40,48 @@ namespace MyQuestionnaire.Web.Api.Models
         /// OpenEndedQuestionClaims
         /// </summary>
         /// <returns></returns>
-        public static ApplicationClaim CreateOpenEndedQuestion()
+        public static ApplicationClaim PostOpenEndedQuestion()
         {
             return new ApplicationClaim()
             {
-                ClaimType = "Create",
+                ClaimType = "PostOpenEndedQuestion",
                 ClaimValue = "OpenEndedQuestion"
             };
         }
 
-        public static ApplicationClaim ReadAllOpenEndedQuestion()
+        public static ApplicationClaim GetAllOpenEndedQuestion()
         {
             return new ApplicationClaim()
             {
-                ClaimType = "ReadAll",
+                ClaimType = "GetAllOpenEndedQuestion",
                 ClaimValue = "OpenEndedQuestion"
             };
         }
 
-        public static ApplicationClaim ReadByIdOpenEndedQuestion()
+        public static ApplicationClaim GetOneOpenEndedQuestion()
         {
             return new ApplicationClaim()
             {
-                ClaimType = "ReadById",
+                ClaimType = "GetOneOpenEndedQuestion",
                 ClaimValue = "OpenEndedQuestion"
             };
         }
 
-        public static ApplicationClaim UpdateAllOpenEndedQuestion()
+        public static ApplicationClaim PutOpenEndedQuestion()
         {
             return new ApplicationClaim()
             {
-                ClaimType = "UpdateAll",
+                ClaimType = "PutOpenEndedQuestion",
                 ClaimValue = "OpenEndedQuestion"
             };
         }
-
-        public static ApplicationClaim UpdateByIdOpenEndedQuestion()
+       
+        public static ApplicationClaim DeleteOpenEndedQuestion()
         {
             return new ApplicationClaim()
             {
-                ClaimType = "UpdateById",
+                ClaimType = "DeleteOpenEndedQuestion",
                 ClaimValue = "OpenEndedQuestion"
-            };
-        }
-        public static ApplicationClaim DeleteAllOpenEndedQuestion()
-        {
-            return new ApplicationClaim()
-            {
-                ClaimType = "DeleteAll",
-                ClaimValue = "OpenEndedQuestion"
-            };
-        }
-        public static ApplicationClaim DeleteByIdOpenEndedQuestion()
-        {
-            return new ApplicationClaim()
-            {
-                ClaimType = "DeleteById",
-                ClaimValue = "OpenEndedQuestion"
-            };
-        }
-        public static ApplicationClaim AllOnOpenEndedQuestion()
-        {
-            return new ApplicationClaim()
-            {
-                ClaimType = "All",
-                ClaimValue = "OpenEndedQuestion"
-            };
-        }
-        /// <summary>
-        /// This allows you to do all operations on all resources
-        /// </summary>
-        /// <returns></returns>
-        public static ApplicationClaim AllOnAll()
-        {
-            return new ApplicationClaim()
-            {
-                ClaimType = "All",
-                ClaimValue = "All"
             };
         }
     }

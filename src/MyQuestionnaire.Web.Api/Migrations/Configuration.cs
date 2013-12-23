@@ -1,12 +1,11 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Data.Entity.Validation;
-using System.Linq;
 using System.Text;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using MyQuestionnaire.Web.Api.Models;
+using WebGrease.Css.Extensions;
 
 namespace MyQuestionnaire.Web.Api.Migrations
 {
@@ -71,21 +70,18 @@ namespace MyQuestionnaire.Web.Api.Migrations
                     }
 
                 };
-                openEndedQuestions.ForEach(o => context.OpenEndedQuestions.Add(o));
+                openEndedQuestions.ForEach(o => context.OpenEndedQuestions.AddOrUpdate(q => new {q.Text, q.Description,q.Answers}, o));
                 context.SaveChanges();
 
                 var claims = new List<ApplicationClaim>
                 {
-                    SetupApplicationClaims.AllOnAll(),
-                    SetupApplicationClaims.AllOnOpenEndedQuestion(),
-                    SetupApplicationClaims.CreateOpenEndedQuestion(),
-                    SetupApplicationClaims.ReadAllOpenEndedQuestion(),
-                    SetupApplicationClaims.ReadByIdOpenEndedQuestion(),
-                    SetupApplicationClaims.UpdateAllOpenEndedQuestion(),
-                    SetupApplicationClaims.UpdateAllOpenEndedQuestion(),
-                    SetupApplicationClaims.UpdateByIdOpenEndedQuestion()
+                    SetupApplicationClaims.GetAllOpenEndedQuestion(),
+                    SetupApplicationClaims.GetOneOpenEndedQuestion(),
+                    SetupApplicationClaims.PutOpenEndedQuestion(),
+                    SetupApplicationClaims.PostOpenEndedQuestion(),
+                    SetupApplicationClaims.DeleteOpenEndedQuestion()
                 };
-                claims.ForEach(c => context.ApplicationClaims.Add(c));
+                claims.ForEach(c => context.ApplicationClaims.AddOrUpdate(ac => new { ac.ClaimType, ac.ClaimValue }, c));
                 context.SaveChanges();
                 //Add Roles
                 var adminRole = new ApplicationRole()
@@ -97,39 +93,46 @@ namespace MyQuestionnaire.Web.Api.Migrations
                     Name = "Default"
                 };
 
-                adminRole.ApplicationClaims.Add(context.ApplicationClaims.SingleOrDefault(c => c.Id == 1));
-                context.ApplicationRoles.Add(adminRole);
-                context.ApplicationRoles.Add(defaultRole);
+
+                context.ApplicationClaims.ForEach(c => adminRole.ApplicationClaims.Add(c));
+                
+                context.ApplicationClaims.ForEach(c =>
+                {
+                    if (c.ClaimType.StartsWith("Get"))
+                    {
+                        defaultRole.ApplicationClaims.Add(c); //Read only access to default role
+                    }
+                    
+                });
+                context.ApplicationRoles.AddOrUpdate(r => r.Name, adminRole);
+                context.ApplicationRoles.AddOrUpdate(r => r.Name, defaultRole);
                 context.SaveChanges();
 
 
                 //Create bindings between Roles and Claims
                // Give read access to default...give all to admin
-                //var adminRole = context.ApplicationRoles.SingleOrDefault(ar => ar.Name == "Admin");
-                //Add All claim to Admin
-                //GetAll claim 
-               
-                context.SaveChanges();
                 var newUser = new ApplicationUser()
                 {
                     UserName = "rcrosbourne"
+                    
                 };
-                //var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>());
-                //await userManager.CreateAsync(newUser, "password123");
-            
-                newUser.Roles.Add(new IdentityUserRole()
+                var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>());
+
+                if (userManager.FindByName(newUser.UserName) == null)
                 {
-                    Role = adminRole
-                });
-                context.Users.Add(newUser);
-                
-                context.ApiClients.Add(new ApiClient()
-                {
-                    Name = "WebClient",
-                    IsBlacklisted = false
-                });
-            
+                    userManager.Create(newUser, "password123");
+                    userManager.AddToRole(newUser.Id, adminRole.Name);
+                    userManager.AddToRole(newUser.Id, defaultRole.Name);
+                }
+                context.ApiClients.AddOrUpdate( client => client.Name, 
+                    new ApiClient()
+                    {
+                        Name = "WebClient",
+                        IsBlacklisted = false
+                    });
                 context.SaveChanges();
+            
+                
             }
             catch (DbEntityValidationException dbValEx)
             {
