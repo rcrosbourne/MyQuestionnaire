@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
 using System.Net.Http;
 using System.Security.Claims;
 using System.Security.Cryptography;
@@ -18,7 +16,6 @@ using MyQuestionnaire.Web.Api.Models;
 using MyQuestionnaire.Web.Api.Providers;
 using MyQuestionnaire.Web.Api.Results;
 using MyQuestionnaire.Web.Common;
-using WebGrease.Css.Extensions;
 
 namespace MyQuestionnaire.Web.Api.Controllers
 {
@@ -28,7 +25,7 @@ namespace MyQuestionnaire.Web.Api.Controllers
     public class AccountController : ApiController
     {
         private const string LocalLoginProvider = "Local";
-        private MyQuestionnaireDbContext dbContext = new MyQuestionnaireDbContext();
+        private MyQuestionnaireDbContext _dbContext = new MyQuestionnaireDbContext();
         public AccountController()
             : this(Startup.UserManagerFactory(), Startup.OAuthOptions.AccessTokenFormat)
         {

@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Web;
 
 namespace MyQuestionnaire.Web.Api.Models
 {
@@ -42,7 +38,7 @@ namespace MyQuestionnaire.Web.Api.Models
         /// <returns></returns>
         public static ApplicationClaim PostOpenEndedQuestion()
         {
-            return new ApplicationClaim()
+            return new ApplicationClaim
             {
                 ClaimType = "PostOpenEndedQuestion",
                 ClaimValue = "OpenEndedQuestion"
@@ -51,7 +47,7 @@ namespace MyQuestionnaire.Web.Api.Models
 
         public static ApplicationClaim GetAllOpenEndedQuestion()
         {
-            return new ApplicationClaim()
+            return new ApplicationClaim
             {
                 ClaimType = "GetAllOpenEndedQuestion",
                 ClaimValue = "OpenEndedQuestion"
@@ -60,7 +56,7 @@ namespace MyQuestionnaire.Web.Api.Models
 
         public static ApplicationClaim GetOneOpenEndedQuestion()
         {
-            return new ApplicationClaim()
+            return new ApplicationClaim
             {
                 ClaimType = "GetOneOpenEndedQuestion",
                 ClaimValue = "OpenEndedQuestion"
@@ -69,7 +65,7 @@ namespace MyQuestionnaire.Web.Api.Models
 
         public static ApplicationClaim PutOpenEndedQuestion()
         {
-            return new ApplicationClaim()
+            return new ApplicationClaim
             {
                 ClaimType = "PutOpenEndedQuestion",
                 ClaimValue = "OpenEndedQuestion"
@@ -78,7 +74,7 @@ namespace MyQuestionnaire.Web.Api.Models
        
         public static ApplicationClaim DeleteOpenEndedQuestion()
         {
-            return new ApplicationClaim()
+            return new ApplicationClaim
             {
                 ClaimType = "DeleteOpenEndedQuestion",
                 ClaimValue = "OpenEndedQuestion"

@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
+﻿using System.IdentityModel.Services;
 using System.Web.Http;
 using Microsoft.Owin.Security.OAuth;
-using Newtonsoft.Json.Serialization;
 using Thinktecture.IdentityModel.Authorization.WebApi;
+using Thinktecture.IdentityModel.Tokens.Http;
 
 namespace MyQuestionnaire.Web.Api
 {
@@ -13,6 +10,7 @@ namespace MyQuestionnaire.Web.Api
     {
         public static void Register(HttpConfiguration config)
         {
+            
             // Web API configuration and services
             // Configure Web API to use only bearer token authentication.
             config.SuppressDefaultHostAuthentication();
@@ -29,6 +27,18 @@ namespace MyQuestionnaire.Web.Api
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
+            //var authConfig = new AuthenticationConfiguration
+            //{
+            //    InheritHostClientIdentity = true,
+            //    RequireSsl = false,
+            //    ClaimsAuthenticationManager = FederatedAuthentication.FederationConfiguration.IdentityConfiguration.ClaimsAuthenticationManager
+            //};
+
+            // setup authentication against membership
+            //authConfig.AddBasicAuthentication();
+
+            //config.MessageHandlers.Add(new AuthenticationHandler(authConfig));
+            
         }
     }
 }

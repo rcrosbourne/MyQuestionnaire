@@ -84,11 +84,11 @@ namespace MyQuestionnaire.Web.Api.Migrations
                 claims.ForEach(c => context.ApplicationClaims.AddOrUpdate(ac => new { ac.ClaimType, ac.ClaimValue }, c));
                 context.SaveChanges();
                 //Add Roles
-                var adminRole = new ApplicationRole()
+                var adminRole = new ApplicationRole
                 {
                     Name = "Admin"
                 };
-                var defaultRole = new ApplicationRole()
+                var defaultRole = new ApplicationRole
                 {
                     Name = "Default"
                 };
@@ -111,7 +111,7 @@ namespace MyQuestionnaire.Web.Api.Migrations
 
                 //Create bindings between Roles and Claims
                // Give read access to default...give all to admin
-                var newUser = new ApplicationUser()
+                var newUser = new ApplicationUser
                 {
                     UserName = "rcrosbourne"
                     
@@ -125,7 +125,7 @@ namespace MyQuestionnaire.Web.Api.Migrations
                     userManager.AddToRole(newUser.Id, defaultRole.Name);
                 }
                 context.ApiClients.AddOrUpdate( client => client.Name, 
-                    new ApiClient()
+                    new ApiClient
                     {
                         Name = "WebClient",
                         IsBlacklisted = false

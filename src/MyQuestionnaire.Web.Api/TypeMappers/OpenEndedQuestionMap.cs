@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Web;
-using System.Web.UI.WebControls;
 using MyQuestionnaire.Web.Api.Models;
 using MyQuestionnaire.Web.Api.ViewModels;
-using Ninject;
 
 namespace MyQuestionnaire.Web.Api.TypeMappers
 {

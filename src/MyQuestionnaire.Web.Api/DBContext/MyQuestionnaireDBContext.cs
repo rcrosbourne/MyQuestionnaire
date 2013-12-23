@@ -2,7 +2,6 @@
 using log4net;
 using Microsoft.AspNet.Identity.EntityFramework;
 using MyQuestionnaire.Web.Api.Models;
-using MyQuestionnaire.Web.Common;
 
 namespace MyQuestionnaire.Web.Api.DBContext
 {

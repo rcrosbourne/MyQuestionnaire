@@ -1,16 +1,13 @@
-﻿using System;
-using System.Web.Http;
-using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
+﻿using System.Web.Http;
+using log4net;
 using MyQuestionnaire.Web.Api.DBContext;
-using MyQuestionnaire.Web.Api.Models;
 using MyQuestionnaire.Web.Api.TypeMappers;
 using MyQuestionnaire.Web.Common;
 using Ninject;
-using log4net;
 using Ninject.Syntax;
+using Ninject.Web.Common;
 
-namespace MyQuestionnaire.Web.Api.App_Start
+namespace MyQuestionnaire.Web.Api
 {
     public class NinjectConfigurator
     {
@@ -37,7 +34,7 @@ namespace MyQuestionnaire.Web.Api.App_Start
             container.Bind<IActionExceptionHandler>().To<ActionExceptionHandler>();
 
             //Db Context
-            container.Bind<IDbContext>().To<MyQuestionnaireDbContext>();
+            container.Bind<IDbContext>().To<MyQuestionnaireDbContext>().InRequestScope();
             //UserManagerFactory
             //ConfigureUserManagerFactory(container);
             

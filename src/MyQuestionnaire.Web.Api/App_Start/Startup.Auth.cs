@@ -2,9 +2,7 @@
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Owin;
-using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.OAuth;
-using MyQuestionnaire.Web.Api.DBContext;
 using MyQuestionnaire.Web.Api.Models;
 using Owin;
 using MyQuestionnaire.Web.Api.Providers;
@@ -13,22 +11,7 @@ namespace MyQuestionnaire.Web.Api
 {
     public partial class Startup
     {
-        //static Startup()
-        //{
-        //    PublicClientId = "self";
-
-        //    UserManagerFactory = () => new UserManager<ApplicationUser>(new UserStore<ApplicationUser>());
-
-        //    OAuthOptions = new OAuthAuthorizationServerOptions
-        //    {
-        //        TokenEndpointPath = new PathString("/Token"),
-        //        Provider = new ApplicationOAuthProvider(PublicClientId, UserManagerFactory),
-        //        AuthorizeEndpointPath = new PathString("/api/Account/ExternalLogin"),
-        //        AccessTokenExpireTimeSpan = TimeSpan.FromDays(14),
-        //        AllowInsecureHttp = true
-        //    };
-        //}
-        static Startup()
+       static Startup()
         {
             PublicClientId = "self";
 
@@ -59,23 +42,7 @@ namespace MyQuestionnaire.Web.Api
            // app.UseExternalSignInCookie(DefaultAuthenticationTypes.ExternalCookie);
             app.UseOAuthAuthorizationServer(OAuthOptions);
             app.UseOAuthBearerAuthentication(new OAuthBearerAuthenticationOptions());
-            // Enable the application to use bearer tokens to authenticate users
-            //app.UseOAuthBearerTokens(OAuthOptions);
-
-            // Uncomment the following lines to enable logging in with third party login providers
-            //app.UseMicrosoftAccountAuthentication(
-            //    clientId: "",
-            //    clientSecret: "");
-
-            //app.UseTwitterAuthentication(
-            //    consumerKey: "",
-            //    consumerSecret: "");
-
-            //app.UseFacebookAuthentication(
-            //    appId: "",
-            //    appSecret: "");
-
-            //app.UseGoogleAuthentication();
+            
         }
     }
 }

@@ -258,7 +258,6 @@
     <Compile Include="DBContext\MyQuestionnaireDBContext.cs" />
     <Compile Include="Models\OpenEndedQuestion.cs" />
     <Compile Include="Models\ModelBase.cs" />
-    <Compile Include="Models\RoleClaim.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\ApplicationOAuthProvider.cs" />
     <Compile Include="Providers\SimpleAuthorizationServerProvider.cs" />

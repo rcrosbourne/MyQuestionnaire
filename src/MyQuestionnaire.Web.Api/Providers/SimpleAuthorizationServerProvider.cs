@@ -5,6 +5,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
+using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.OAuth;
 using MyQuestionnaire.Web.Api.DBContext;
 using MyQuestionnaire.Web.Api.Models;
@@ -31,26 +32,32 @@ namespace MyQuestionnaire.Web.Api.Providers
         {
             // validate client credentials
             // should be stored securely (salted, hashed, iterated)
-            string id, secret;
-            if (context.TryGetBasicCredentials(out id, out secret))
-            {
-                var client = _dbContext
-                    .ApiClients
-                    .AsEnumerable()
-                    .SingleOrDefault(c => c.Id.ToString() == id && c.IsBlacklisted == false);
-                
-                if (client != null)
-                {
-                    // need to make the client_id available for later security checks
-                    context.OwinContext.Set("as:client_id", client.Id.ToString());
-                    //context.OwinContext.Set("as:client_name", client.Name);
-                    context.Validated();
-                    return Task.FromResult<object>(null);
-                }
-                
-            }
-            context.Rejected();
+            context.Validated();
             return Task.FromResult<object>(null);
+            using (_dbContext)
+            {
+                string id, secret;
+                if (context.TryGetBasicCredentials(out id, out secret))
+                {
+                    var client = _dbContext
+                        .ApiClients
+                        .AsEnumerable()
+                        .SingleOrDefault(c => c.Id.ToString() == id && c.IsBlacklisted == false);
+
+                    if (client != null)
+                    {
+                        // need to make the client_id available for later security checks
+                        context.OwinContext.Set("as:client_id", client.Id.ToString());
+                        //context.OwinContext.Set("as:client_name", client.Name);
+                        context.Validated();
+                        return Task.FromResult<object>(null);
+                    }
+
+                }
+                context.Rejected();
+                return Task.FromResult<object>(null);
+            }
+            
         }
 
         public override async Task GrantResourceOwnerCredentials(OAuthGrantResourceOwnerCredentialsContext context)
@@ -68,17 +75,37 @@ namespace MyQuestionnaire.Web.Api.Providers
                     return;
                 }
 
-                var id = await userManager.CreateIdentityAsync(user, context.Options.AuthenticationType); ;
+                var id = await userManager.CreateIdentityAsync(user, context.Options.AuthenticationType);
                 //var id = new ClaimsIdentity(context.Options.AuthenticationType); 
                 //id.AddClaim(new Claim(ClaimTypes.NameIdentifier, user.UserName));
                 
                 var props = new AuthenticationProperties(new Dictionary<string, string>
                 {
-                    { "as:client_id", context.ClientId }
+                    { "as:client_id", "WebClient" }//{ "as:client_id", context.ClientId }
                 });
-                var ticket = new AuthenticationTicket(id, props);
+                //var ticket = new AuthenticationTicket(id, props);
+                //context.Validated(ticket);
+
+                ClaimsIdentity oAuthIdentity = await userManager.CreateIdentityAsync(user,
+                    context.Options.AuthenticationType);
+                ClaimsIdentity cookiesIdentity = await userManager.CreateIdentityAsync(user,
+                    CookieAuthenticationDefaults.AuthenticationType);
+                AuthenticationProperties properties = CreateProperties(user.UserName);
+                var ticket = new AuthenticationTicket(oAuthIdentity, properties);
                 context.Validated(ticket);
+                context.Request.Context.Authentication.SignIn(cookiesIdentity);
+            
             }
+        }
+
+        public static AuthenticationProperties CreateProperties(string userName)
+        {
+            IDictionary<string, string> data = new Dictionary<string, string>
+            {
+                { "userName", userName },
+                { "as:client_id", "WebClient" }
+            };
+            return new AuthenticationProperties(data);
         }
 
         public override async Task GrantRefreshToken(OAuthGrantRefreshTokenContext context)
@@ -108,7 +135,6 @@ namespace MyQuestionnaire.Web.Api.Providers
                 }
 
                 var newId = await userManager.CreateIdentityAsync(user, context.Options.AuthenticationType);
-                ;
                 //var id = new ClaimsIdentity(context.Options.AuthenticationType); 
                 //id.AddClaim(new Claim(ClaimTypes.NameIdentifier, user.UserName));
                 var newTicket = new AuthenticationTicket(newId, context.Ticket.Properties);

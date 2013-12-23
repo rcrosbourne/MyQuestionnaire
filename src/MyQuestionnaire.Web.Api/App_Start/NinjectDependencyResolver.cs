@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Web.Http.Dependencies;
 using Ninject;
 
-namespace MyQuestionnaire.Web.Api.App_Start
+namespace MyQuestionnaire.Web.Api
 {
     public class NinjectDependencyResolver : IDependencyResolver
     {

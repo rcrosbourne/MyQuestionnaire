@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using System.Web;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Infrastructure;
 
@@ -13,14 +10,14 @@ namespace MyQuestionnaire.Web.Api.Providers
     // this is not production ready!
     public class SimpleRefreshTokenProvider : IAuthenticationTokenProvider
     {
-        private static readonly ConcurrentDictionary<string, AuthenticationTicket> _refreshTokens = new ConcurrentDictionary<string, AuthenticationTicket>();
+        private static readonly ConcurrentDictionary<string, AuthenticationTicket> RefreshTokens = new ConcurrentDictionary<string, AuthenticationTicket>();
 
         public async Task CreateAsync(AuthenticationTokenCreateContext context)
         {
             var guid = Guid.NewGuid().ToString();
 
             // maybe only create a handle the first time, then re-use for same client
-            _refreshTokens.TryAdd(guid, context.Ticket);
+            RefreshTokens.TryAdd(guid, context.Ticket);
 
             // consider storing only the hash of the handle
             context.SetToken(guid);
@@ -29,7 +26,7 @@ namespace MyQuestionnaire.Web.Api.Providers
         public async Task ReceiveAsync(AuthenticationTokenReceiveContext context)
         {
             AuthenticationTicket ticket;
-            if (_refreshTokens.TryRemove(context.Token, out ticket))
+            if (RefreshTokens.TryRemove(context.Token, out ticket))
             {
                 context.SetTicket(ticket);
             }

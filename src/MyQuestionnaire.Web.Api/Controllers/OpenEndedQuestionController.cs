@@ -5,7 +5,6 @@ using System.Net;
 using System.Web.Http;
 using System.Web.Http.Description;
 using log4net;
-using Microsoft.AspNet.Identity;
 using MyQuestionnaire.Web.Api.DBContext;
 using MyQuestionnaire.Web.Api.TypeMappers;
 using MyQuestionnaire.Web.Api.ViewModels;
@@ -15,7 +14,7 @@ using Thinktecture.IdentityModel.Authorization.WebApi;
 namespace MyQuestionnaire.Web.Api.Controllers
 {
     [LoggingSession]
-    //[Authorize]
+    [Authorize]
     //[ClaimsAuthorize]
     public class OpenEndedQuestionController : ApiController
     {
@@ -76,10 +75,7 @@ namespace MyQuestionnaire.Web.Api.Controllers
                 {
                     return NotFound();
                 }
-                else
-                {
-                    throw;
-                }
+                throw;
             }
 
             return StatusCode(HttpStatusCode.NoContent);
