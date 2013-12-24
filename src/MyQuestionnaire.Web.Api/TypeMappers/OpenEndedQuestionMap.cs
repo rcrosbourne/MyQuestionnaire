@@ -21,14 +21,12 @@ namespace MyQuestionnaire.Web.Api.TypeMappers
                                 new Link()
                                 {
                                     Title = "self",
-                                    Rel = "self",
                                     Href = "/api/openendedquestion/" + model.Id
                                                
                                 },
                                 new Link()
                                 {
                                     Title = "All Open Ended Questions",
-                                    Rel = "all",
                                     Href = "/api/openendedquestion"
                                 }
 

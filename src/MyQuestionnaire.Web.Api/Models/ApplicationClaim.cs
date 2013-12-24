@@ -80,5 +80,13 @@ namespace MyQuestionnaire.Web.Api.Models
                 ClaimValue = "OpenEndedQuestion"
             };
         }
+        public static ApplicationClaim GetClientAdministrationLinks()
+        {
+            return new ApplicationClaim
+            {
+                ClaimType = "Get",
+                ClaimValue = "ClientAdministraton"
+            };
+        }
     }
 }

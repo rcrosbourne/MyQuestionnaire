@@ -79,7 +79,8 @@ namespace MyQuestionnaire.Web.Api.Migrations
                     SetupApplicationClaims.GetOneOpenEndedQuestion(),
                     SetupApplicationClaims.PutOpenEndedQuestion(),
                     SetupApplicationClaims.PostOpenEndedQuestion(),
-                    SetupApplicationClaims.DeleteOpenEndedQuestion()
+                    SetupApplicationClaims.DeleteOpenEndedQuestion(),
+                    SetupApplicationClaims.GetClientAdministrationLinks()
                 };
                 claims.ForEach(c => context.ApplicationClaims.AddOrUpdate(ac => new { ac.ClaimType, ac.ClaimValue }, c));
                 context.SaveChanges();

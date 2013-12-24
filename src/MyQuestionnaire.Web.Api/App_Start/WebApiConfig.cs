@@ -1,6 +1,7 @@
 ﻿using System.IdentityModel.Services;
 using System.Web.Http;
 using Microsoft.Owin.Security.OAuth;
+using MyQuestionnaire.Web.Api.Controllers;
 using Thinktecture.IdentityModel.Authorization.WebApi;
 using Thinktecture.IdentityModel.Tokens.Http;
 
@@ -25,7 +26,7 @@ namespace MyQuestionnaire.Web.Api
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
                 routeTemplate: "api/{controller}/{id}",
-                defaults: new { id = RouteParameter.Optional }
+                defaults: new { id = RouteParameter.Optional, controller = "HomeApiStaticPage" }
             );
             //var authConfig = new AuthenticationConfiguration
             //{

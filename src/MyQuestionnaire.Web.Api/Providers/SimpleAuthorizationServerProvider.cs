@@ -53,8 +53,6 @@ namespace MyQuestionnaire.Web.Api.Providers
             }
             context.Rejected();
             return Task.FromResult<object>(null);
-            
-            
         }
 
         public override async Task GrantResourceOwnerCredentials(OAuthGrantResourceOwnerCredentialsContext context)
@@ -71,14 +69,6 @@ namespace MyQuestionnaire.Web.Api.Providers
                     context.SetError("invalid_grant", "The user name or password is incorrect.");
                     return;
                 }
-
-                var id = await userManager.CreateIdentityAsync(user, context.Options.AuthenticationType);
-                //var id = new ClaimsIdentity(context.Options.AuthenticationType); 
-                //id.AddClaim(new Claim(ClaimTypes.NameIdentifier, user.UserName));
-                
-               
-                //var ticket = new AuthenticationTicket(id, props);
-                //context.Validated(ticket);
 
                 ClaimsIdentity oAuthIdentity = await userManager.CreateIdentityAsync(user,
                     context.Options.AuthenticationType);

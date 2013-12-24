@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
+using System.Web.Caching;
 using MyQuestionnaire.Web.Api.DBContext;
 using MyQuestionnaire.Web.Api.Models;
 using WebGrease.Css.Extensions;
@@ -52,6 +53,7 @@ namespace MyQuestionnaire.Web.Api.AuthorizationConfiguration
             });
             applicationClaims = applicationClaims.Distinct().ToList();
             return applicationClaims.Any(c => c.ClaimType == action && c.ClaimValue == resource);
+            
         }
     }
 }
