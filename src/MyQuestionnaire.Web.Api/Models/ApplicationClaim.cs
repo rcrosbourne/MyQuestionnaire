@@ -80,6 +80,14 @@ namespace MyQuestionnaire.Web.Api.Models
                 ClaimValue = "OpenEndedQuestion"
             };
         }
+        public static ApplicationClaim GetHomeApiStaticPage()
+        {
+            return new ApplicationClaim
+            {
+                ClaimType = "Get",
+                ClaimValue = "HomeApiStaticPage"
+            };
+        }
         public static ApplicationClaim GetClientAdministrationLinks()
         {
             return new ApplicationClaim
@@ -88,5 +96,22 @@ namespace MyQuestionnaire.Web.Api.Models
                 ClaimValue = "ClientAdministraton"
             };
         }
+        public static ApplicationClaim GetUserAcoountAdministration()
+        {
+            return new ApplicationClaim
+            {
+                ClaimType = "Get",
+                ClaimValue = "UserAcoountAdministration"
+            };
+        }
+        public static ApplicationClaim GetQuestionnaireAdministration()
+        {
+            return new ApplicationClaim
+            {
+                ClaimType = "Get",
+                ClaimValue = "QuestionnaireAdministration"
+            };
+        }
+
     }
 }

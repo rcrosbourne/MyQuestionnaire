@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
-using System.Web.Caching;
 using MyQuestionnaire.Web.Api.DBContext;
 using MyQuestionnaire.Web.Api.Models;
 using WebGrease.Css.Extensions;
@@ -42,7 +41,7 @@ namespace MyQuestionnaire.Web.Api.AuthorizationConfiguration
             var resource = context.Resource.First().Value;
             var action = context.Action.First().Value;
             var applicationClaims = new List<ApplicationClaim>();
-            List<ApplicationClaim> claims = applicationClaims;
+            var claims = applicationClaims;
             dbContext.ApplicationRoles.ForEach(role =>
             {
                 

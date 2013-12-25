@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data.Entity.Validation;
+using System.Linq;
 using System.Text;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
@@ -80,33 +81,29 @@ namespace MyQuestionnaire.Web.Api.Migrations
                     SetupApplicationClaims.PutOpenEndedQuestion(),
                     SetupApplicationClaims.PostOpenEndedQuestion(),
                     SetupApplicationClaims.DeleteOpenEndedQuestion(),
+                    SetupApplicationClaims.GetHomeApiStaticPage(),
+                    SetupApplicationClaims.GetUserAcoountAdministration(),
+                    SetupApplicationClaims.GetQuestionnaireAdministration(),
                     SetupApplicationClaims.GetClientAdministrationLinks()
                 };
                 claims.ForEach(c => context.ApplicationClaims.AddOrUpdate(ac => new { ac.ClaimType, ac.ClaimValue }, c));
                 context.SaveChanges();
                 //Add Roles
-                var adminRole = new ApplicationRole
-                {
-                    Name = "Admin"
-                };
-                var defaultRole = new ApplicationRole
-                {
-                    Name = "Default"
-                };
-
-
-                context.ApplicationClaims.ForEach(c => adminRole.ApplicationClaims.Add(c));
+                //Get role if not exist
+                var adminRole = context.ApplicationRoles.SingleOrDefault(r => r.Name == "Admin") ?? new ApplicationRole {Name = "Admin" };
+                var defaultRole = context.ApplicationRoles.SingleOrDefault(r => r.Name == "Default") ?? new ApplicationRole { Name = "Default" };
                 
+                
+                context.ApplicationClaims.ForEach(c => adminRole.ApplicationClaims.Add(c));
+
                 context.ApplicationClaims.ForEach(c =>
                 {
                     if (c.ClaimType.StartsWith("Get"))
                     {
                         defaultRole.ApplicationClaims.Add(c); //Read only access to default role
                     }
-                    
+
                 });
-                context.ApplicationRoles.AddOrUpdate(r => r.Name, adminRole);
-                context.ApplicationRoles.AddOrUpdate(r => r.Name, defaultRole);
                 context.SaveChanges();
 
 
